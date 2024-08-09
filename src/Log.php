@@ -30,24 +30,24 @@ class Log {
         unset( self::$loggers[ $name ] );
     }
 
-    public static function info( string $message, array $args = [] ): void {
-        self::log( __FUNCTION__, sprintf( $message, ...$args ) );
+    public static function info( string $message, array $context = [] ): void {
+        self::log( __FUNCTION__, $message, $context );
     }
 
-    public static function warning( string $message, array $args = [] ) {
-        self::log( __FUNCTION__, sprintf( $message, ...$args ) );
+    public static function warning( string $message, array $context = [] ) {
+        self::log( __FUNCTION__, $message, $context );
     }
 
-    public static function error( string $message, array $args = [] ) {
-        self::log( __FUNCTION__, sprintf( $message, ...$args ) );
+    public static function error( string $message, array $context = [] ) {
+        self::log( __FUNCTION__, $message, $context );
     }
 
-    public static function debug( string $message, array $args = [] ) {
-        self::log( __FUNCTION__, sprintf( $message, ...$args ) );
+    public static function debug( string $message, array $context = [] ) {
+        self::log( __FUNCTION__, $message, $context );
     }
 
     public static function log( string $level, string $message, array $context = [] ) {
-        self::get_logger( self::$current_logger )->{ $level }( $message, $context );
+        self::get_logger( self::$current_logger )?->{ $level }( $message, $context );
 
         self::$current_logger = self::$default_logger;
     }

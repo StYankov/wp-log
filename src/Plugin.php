@@ -14,31 +14,14 @@ final class Plugin {
 
     private function __construct() {
         $this->init_default_logger();
+
+        do_action( 'wp_log_init' ); 
     }
 
     private function init_default_logger() {
         Log::instance();
 
-        $stream_handler = new StreamHandler( self::get_logs_folder_path() . '/wp-log.log', Level::Debug );
-        $formatter = new LineFormatter( null, null, false, true );
-        $stream_handler->setFormatter( $formatter );
-
-        $default_logger = new Logger( 'default' );
-        $default_logger->pushHandler( $stream_handler );
-
-        Log::add_logger( $default_logger );
-    }
-
-    private function get_email_handler() {
-        $email_handler           = new MailHandler( 'st.yankov00@gmail.com', 'Fatal error', 'Gifto alert facility' );
-        $fingers_crossed_handler = new FingersCrossedHandler(
-            $email_handler,
-            Level::Critical
-        );
-
-        $bufferHandler = new BufferHandler($fingers_crossed_handler, 10);
-
-        return $bufferHandler;
+        Log::add_logger( self::create_file_logger( 'default', 'default.log' ) );
     }
 
     public static function instance(): self {
@@ -53,5 +36,16 @@ final class Plugin {
         $uploads_dir = wp_upload_dir();
 
         return $uploads_dir['basedir'] . '/logs';
+    }
+
+    public static function create_file_logger( string $log_name, string $log_file ) : Logger {
+        $stream_handler = new StreamHandler( self::get_logs_folder_path() . '/' . $log_file, Level::Debug );
+        $formatter      = new LineFormatter( null, null, false, true );
+        $stream_handler->setFormatter( $formatter );
+
+        $logger = new Logger( $log_name );
+        $logger->pushHandler( $stream_handler );
+
+        return $logger;
     }
 }
