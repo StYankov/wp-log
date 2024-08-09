@@ -1,0 +1,20 @@
+{
+    "name": "skills/wow-log",
+    "type": "wordpress-plugin",
+    "autoload": {
+        "psr-4": {
+            "WPLog\\": "src/",
+            "WowLog\\Vendor\\Psr\\Log\\": "vendor_prefixed/psr/log/src",
+            "WowLog\\Vendor\\Monolog\\": "vendor_prefixed/monolog/monolog/src/Monolog"
+        }
+    },
+    "authors": [
+        {
+            "name": "StYankov",
+            "email": "st.yankov00@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "2.9.2"
+    }
+}
